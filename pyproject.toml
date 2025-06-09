@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "products-analyze"
+version = "0.1.0"
+description = ""
+authors = ["Aleksey Arsentyev <arsentief@gmail.com>"]
+readme = "README.md"
+packages = [{include = "products_analyze"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = {extras = ["all"], version = "^0.115.12"}
+sqlalchemy = "^2.0.41"
+alembic = "^1.16.1"
+asyncpg = "^0.30.0"
+python-jose = "^3.5.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

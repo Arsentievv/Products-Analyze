@@ -1,0 +1,7 @@
+Poetry
+
+1) poetry init - инициализация poetry
+2) poetry env info --path - путь до окружения, что бы добавить в pycharm
+3) poetry add - добавление библиотеки
+4) poetry run ... старт приложения с енв poetry
+
