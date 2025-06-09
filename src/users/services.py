@@ -31,6 +31,39 @@ class UserService:
             access_token=token
         )
 
+    async def update_user(
+            self,
+            user_id: int,
+            email: str = None,
+            password: str = None,
+            telegram: str = None
+    ) -> schemas.UserSchema:
+        """
+        Сервисный метод изменения данных пользователя.
+        :param user_id: ID пользователя
+        :param email: Email
+        :param password: Пароль
+        :param telegram: Телеграм ник
+        :return: User
+        """
+        user = await self.user_repository.get_user_by_id(user_id)
+        if user:
+            updated_user = await self.user_repository.update_user(
+                user=user,
+                email=email,
+                password=password,
+                telegram=telegram
+            )
+            return schemas.UserSchema(
+                id=updated_user.id,
+                email=updated_user.email,
+                password=updated_user.password,
+                telegram=updated_user.telegram,
+                is_active=updated_user.is_active
+            )
+        else:
+            raise UserNotFoundError()
+
     async def login(self, email: str, password: str) -> schemas.UserLoginSchema:
         """
         Метод авторизации пользователя.
@@ -45,6 +78,54 @@ class UserService:
             id=user.id,
             access_token=token
         )
+
+    async def get_user_by_id(self, user_id: int) -> schemas.UserSchema:
+        """
+        Сервисный метод получения пользователя по ID из базы данных.
+        :param user_id: ID пользователя.
+        :return: User
+        """
+        user = await self.user_repository.get_user_by_id(user_id)
+        if user:
+            return schemas.UserSchema(
+                id=user.id,
+                email=user.email,
+                password=user.password,
+                telegram=user.telegram,
+                is_active=user.is_active
+            )
+        else:
+            raise UserNotFoundError()
+
+    async def get_user_by_email(self, email: str) -> schemas.UserSchema:
+        """
+        Сервисный метод получения пользователя по ID из базы данных.
+        :param email: Email пользователя.
+        :return: User
+        """
+        user = await self.user_repository.get_user_by_email(email)
+        if user:
+            return schemas.UserSchema(
+                id=user.id,
+                email=user.email,
+                password=user.password,
+                telegram=user.telegram,
+                is_active=user.is_active
+            )
+        else:
+            raise UserNotFoundError()
+
+    async def delete_user(self, user_id: int) -> None:
+        """
+        Сервисный метод удаления пользователя.
+        :param user_id: ID пользователя
+        :return: None
+        """
+        user = await self.user_repository.get_user_by_id(user_id)
+        if user:
+            await self.user_repository.delete_user(user)
+        else:
+            raise UserNotFoundError
 
     @staticmethod
     async def _validate_auth_user(user: models.User, password: str):
