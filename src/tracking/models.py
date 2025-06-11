@@ -8,8 +8,8 @@ class ProductTrack(Base):
     __tablename__ = "product_tracks"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
-    product_id: Mapped[int] = mapped_column(ForeignKey("products.id", ondelete="CASCADE"))
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    product_id: Mapped[int] = mapped_column(ForeignKey("products.id", ondelete="CASCADE"), nullable=False)
     is_active: Mapped[bool] = mapped_column(default=True)
     creation_date: Mapped[datetime] = mapped_column(default=datetime.utcnow)
 
